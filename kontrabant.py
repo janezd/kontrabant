@@ -18,7 +18,7 @@
 
 import pickle
 import time
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets, QtWidgets
 from random import randint
 
 class Quill:
@@ -532,18 +532,18 @@ class Quill:
     def setup_ui(self):
         goljufam = True
 
-        dlg = self.dlg = QtGui.QWidget()
+        dlg = self.dlg = QtWidgets.QWidget()
         dlg.setWindowTitle("Kontrabant")
         dlg.setEnabled(True)
         dlg.resize(1024 if goljufam else 544, 380)
 
-        dlg.setLayout(QtGui.QHBoxLayout())
-        vbox1 = QtGui.QWidget()
+        dlg.setLayout(QtWidgets.QHBoxLayout())
+        vbox1 = QtWidgets.QWidget()
         vbox1.setFixedWidth(350)
-        vbox1.setLayout(QtGui.QVBoxLayout())
+        vbox1.setLayout(QtWidgets.QVBoxLayout())
         dlg.layout().addWidget(vbox1)
 
-        self.izpis = QtGui.QTextEdit()
+        self.izpis = QtWidgets.QTextEdit()
         self.izpis.setReadOnly(True)
         self.izpis.setMinimumHeight(290)
         self.izpis.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -551,7 +551,7 @@ class Quill:
             "font-family: Arial; font-size: 14; color: white; background: blue")
         self.izpisano = ""
 
-        self.ukazna = QtGui.QLineEdit()
+        self.ukazna = QtWidgets.QLineEdit()
         self.ukazna.setFocus()
         self.ukazna.returnPressed.connect(self.user_command)
 
@@ -559,15 +559,15 @@ class Quill:
         vbox1.layout().addWidget(self.ukazna)
         dlg.show()
 
-        tabs = QtGui.QTabWidget()
+        tabs = QtWidgets.QTabWidget()
         tabs.setMinimumSize(350, 290)
         dlg.layout().addWidget(tabs)
 
-        self.g_lokacija = QtGui.QTreeWidget()
+        self.g_lokacija = QtWidgets.QTreeWidget()
         tabs.addTab(self.g_lokacija, "Lokacija")
         self.g_lokacija.setHeaderHidden(True)
 
-        self.g_predmeti = QtGui.QTreeWidget()
+        self.g_predmeti = QtWidgets.QTreeWidget()
         tabs.addTab(self.g_predmeti, "Predmeti")
         self.g_predmeti.setColumnCount(3)
         # GPredmeti->setColumnAlignment(1, AlignHCenter);
@@ -576,21 +576,21 @@ class Quill:
         # self.g_predmeti.setColumnWidthMode(0, QListView::Manual);
         self.g_predmeti.setSortingEnabled(True)
 
-        self.g_dogodki = QtGui.QTreeWidget()
+        self.g_dogodki = QtWidgets.QTreeWidget()
         tabs.addTab(self.g_dogodki, "Dogodki")
         self.g_dogodki.setColumnCount(1)
         self.g_dogodki.setHeaderHidden(True)
 
-        self.g_lokacije = QtGui.QTreeWidget()
+        self.g_lokacije = QtWidgets.QTreeWidget()
         tabs.addTab(self.g_lokacije, "Lokacije")
         self.g_dogodki.setHeaderHidden(True)
 
-        self.g_zastavice = QtGui.QTreeWidget()
+        self.g_zastavice = QtWidgets.QTreeWidget()
         tabs.addTab(self.g_zastavice, "Zastavice")
         self.g_zastavice.setColumnCount(1)
         self.g_zastavice.setHeaderHidden(True)
 
-        self.g_sporocila = QtGui.QTreeWidget()
+        self.g_sporocila = QtWidgets.QTreeWidget()
         tabs.addTab(self.g_sporocila, "Ukazi")
         self.g_sporocila.setColumnCount(1)
         self.g_predmeti.setColumnWidth(0, 100)
@@ -681,7 +681,7 @@ class Quill:
 
     def anykey(self):
         return
-        QtGui.QMessageBox.information(
+        QtWidgets.QMessageBox.information(
             None, "Cakam...", "Pritisni OK, pa bova nadaljevala")
 
     def set_location_description(self, msg, dirs):
@@ -762,19 +762,19 @@ class Quill:
     def parse_tree(tree_widget, tree):
         tree_widget.clear()
         for state, events in tree:
-            it = QtGui.QTreeWidgetItem(state)
+            it = QtWidgets.QTreeWidgetItem(state)
             tree_widget.addTopLevelItem(it)
             for event in events:
                 text, subnodes, is_open = (event + (None, None))[:3]
                 if isinstance(text, str):
-                    it2 = QtGui.QTreeWidgetItem([text])
+                    it2 = QtWidgets.QTreeWidgetItem([text])
                     it.addChild(it2)
                     if subnodes:
-                        it2.addChildren([QtGui.QTreeWidgetItem([i])
+                        it2.addChildren([QtWidgets.QTreeWidgetItem([i])
                                          for i in subnodes])
                     it2.setExpanded(True)
                 else:
-                    it.addChildren(QtGui.QTreeWidgetItem([i]) for i in text)
+                    it.addChildren(QtWidgets.QTreeWidgetItem([i]) for i in text)
 
     def goljufija_const(self):
         repr_act = self.repr_action
@@ -848,7 +848,7 @@ class Quill:
 
                 self.cheat_locations[i] = (responses, processes)
 
-                it = QtGui.QTreeWidgetItem(
+                it = QtWidgets.QTreeWidgetItem(
                     ["%s (%i)" % (self.locations[i].description, i)])
                 self.g_lokacije.addTopLevelItem(it)
                 for name, content in (
@@ -856,14 +856,14 @@ class Quill:
                         ("Ukazi", responses), ("Dogodki", processes)):
                     if not content:
                         continue
-                    it2 = QtGui.QTreeWidgetItem([name])
+                    it2 = QtWidgets.QTreeWidgetItem([name])
                     it.addChild(it2)
                     for con in content:
                         if isinstance(con, str):
-                            it3 = QtGui.QTreeWidgetItem([con])
+                            it3 = QtWidgets.QTreeWidgetItem([con])
                         else:
-                            it3 = QtGui.QTreeWidgetItem([con[0]])
-                            it3.addChildren([QtGui.QTreeWidgetItem([i])
+                            it3 = QtWidgets.QTreeWidgetItem([con[0]])
+                            it3.addChildren([QtWidgets.QTreeWidgetItem([i])
                                              for i in con[1]])
                         it3.setExpanded(True)
                         it2.addChild(it3)
@@ -888,9 +888,9 @@ class Quill:
 
         def add_event_to_tree(tree, event, skip_at=0):
             tc, ta, isopen = repr_act(event, skip_at)
-            it = QtGui.QTreeWidgetItem([tc])
+            it = QtWidgets.QTreeWidgetItem([tc])
             tree.addTopLevelItem(it)
-            it.addChildren([QtGui.QTreeWidgetItem([i]) for i in ta])
+            it.addChildren([QtWidgets.QTreeWidgetItem([i]) for i in ta])
 
         def get_responses():
             acts = []
@@ -910,7 +910,7 @@ class Quill:
                             break
                     else:
                         self.g_sporocila.addTopLevelItem(
-                            QtGui.QTreeWidgetItem([repr_act(event, 0)]))
+                            QtWidgets.QTreeWidgetItem([repr_act(event, 0)]))
                         continue
                 add_event_to_tree(self.g_sporocila, event)
 
@@ -928,9 +928,9 @@ class Quill:
             self.g_lokacija.clear()
             conn = list(self.location.connections.items())
             if conn:
-                it = QtGui.QTreeWidgetItem(["Izhodi"])
+                it = QtWidgets.QTreeWidgetItem(["Izhodi"])
                 self.g_lokacija.addTopLevelItem(it)
-                it.addChildren([QtGui.QTreeWidgetItem(
+                it.addChildren([QtWidgets.QTreeWidgetItem(
                     ["%s: %s (%i)" % (
                         self.index_to_word[dire],
                         self.locations[loc].description[:40], loc)])
@@ -939,23 +939,23 @@ class Quill:
 
             responses, processes = self.cheat_locations[self.location_no]
             if responses:
-                it = QtGui.QTreeWidgetItem(["Ukazi"])
+                it = QtWidgets.QTreeWidgetItem(["Ukazi"])
                 self.g_lokacija.addTopLevelItem(it)
                 for content in responses:
-                    it2 = QtGui.QTreeWidgetItem([content[0]])
+                    it2 = QtWidgets.QTreeWidgetItem([content[0]])
                     it.addChild(it2)
-                    it2.addChildren([QtGui.QTreeWidgetItem([i])
+                    it2.addChildren([QtWidgets.QTreeWidgetItem([i])
                                      for i in content[1]])
                     it2.setExpanded(True)
                 it.setExpanded(True)
 
             if processes:
-                it = QtGui.QTreeWidgetItem(["Dogodki"])
+                it = QtWidgets.QTreeWidgetItem(["Dogodki"])
                 self.g_lokacija.addTopLevelItem(it)
                 for content in processes:
-                    it2 = QtGui.QTreeWidgetItem([content[0]])
+                    it2 = QtWidgets.QTreeWidgetItem([content[0]])
                     it.addChild(it2)
-                    it2.addChildren([QtGui.QTreeWidgetItem([i])
+                    it2.addChildren([QtWidgets.QTreeWidgetItem([i])
                                      for i in content[1]])
                     it2.setExpanded(True)
                 it.setExpanded(True)
@@ -1053,6 +1053,6 @@ class Quill:
         self.parse_tree(self.g_predmeti, getobjects())
 
 
-app = QtGui.QApplication([])
+app = QtWidgets.QApplication([])
 q = Quill()
 app.exec()
