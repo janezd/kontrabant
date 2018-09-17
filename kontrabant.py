@@ -138,7 +138,7 @@ class Quill:
     def do_get(self, param1):
         loc = self.objects[param1].location
         if loc == self.Object.WORN or loc == self.Object.CARRIED:
-            self.printout("To vendar ze nosim!")
+            self.printout("To vendar že nosim!")
             return -1
         elif loc != self.location_no:
             self.printout("Saj ni tukaj.")
@@ -152,7 +152,7 @@ class Quill:
     def do_wear(self, param1):
         loc = self.objects[param1].location
         if loc == self.Object.WORN:
-            self.printout("To vendar ze nosim!")
+            self.printout("To vendar že nosim!")
             return -1
         elif loc != self.Object.CARRIED:
             self.printout("Tega sploh nimam!")
@@ -240,9 +240,9 @@ class Quill:
             elif obj.location == Quill.Object.WORN:
                 inv += "<LI>%s (nosim)</LI>" % obj.description
         if inv:
-            inv = "Prenasam pa tole:<UL>"+inv+"</UL"
+            inv = "Prenašam pa tole:<UL>"+inv+"</UL"
         else:
-            inv = "Prenasam pa tole:<UL>pravzaprav nic</UL"
+            inv = "Prenašam pa tole:<UL>pravzaprav nič</UL"
         self.printout(inv)
 
     def do_message(self, msgno):
@@ -293,7 +293,7 @@ class Quill:
         self.anykey()
 
     def do_save(self):
-        self.printout("Shranjevati pa se ne znam ...")
+        self.printout("Shranjevati pa še ne znam ...")
 
     def do_load(self):
         self.printout("Nalagati pa znam ...")
@@ -314,7 +314,7 @@ class Quill:
         self.printout("Ukazov dal si %4i zares<br>" % self.turns)
 
     def do_score(self):
-        self.printout("Nabral si %i<br>" % self.flags[30])
+        self.printout("Nabral si %i odstotkov<br>" % self.flags[30])
 
     @staticmethod
     def do_pause(s50):
@@ -371,9 +371,10 @@ class Quill:
         colors = ["#000000", "#0000ff", "#ff0000", "#ff00ff", "#00ff00",
                   "#00ffff", "#ffff00", "#ffffff"]
         replacs = {"&": "&amp", "<": "&lt;", ">": "&gt;", "\x60": "&pound;",
-                   "\x7f": "&copy;", "\x95": "c", "\x94": "s", "\xa0": "z",
-                   "\x92": "C", "\xa2": "S", "\x90": "Z"}
-        codes = {"\x12": "BIG", "\x13": "B", "\x14": "I", "\x15": "U"}
+                   "\x7f": "&copy;", "\x95": "č", "\x94": "š", "\xa0": "ž",
+                   "\x92": "Č", "\xa2": "Š", "\x90": "Ž"}
+        # How would these codes be reset?
+        # codes = {"\x12": "<big>", "\x13": "<b>", "\x14": "<i>", "\x15": "<u>"}
 
         def get_items(ptr, n):
             items = []
@@ -406,12 +407,12 @@ class Quill:
                             s += "<FONT COLOR=%s>" % colors[cl]
                     elif c == "\x11":  # PAPER
                         ptr += 1
-                    elif c in codes:
-                        if sna[ptr] != 255:
-                            s += "<%s>" % codes[c]
-                        else:
-                            s += "</%s>" % codes[c]
-                        ptr += 1
+                    # elif c in codes:
+                    #     if sna[ptr] != 255:
+                    #         s += "<%s>" % codes[c]
+                    #     else:
+                    #         s += "</%s>" % codes[c]
+                    #     ptr += 1
                     if xpos == 32:
                         if sna[ptr] != ' ':
                             s += " "
@@ -513,7 +514,7 @@ class Quill:
         self.izpisano = ""
         if self.flags[0]:
             self.set_location_description(
-                "Temno je kot v rogu. Nic ne vidim.", (0,) * 12)
+                "Temno je kot v rogu. Nič ne vidim.", (0,) * 12)
             return
 
         desc = self.location.description
@@ -635,7 +636,7 @@ class Quill:
 
         if not len(trans):
             self.printout("Tega sploh ne razumem. "
-                          "Poskusi povedati kako drugace.")
+                          "Poskusi povedati kako drugače.")
 
         elif len(trans) == 1 and trans[0] in self.location.connections:
             self.flags[2] = self.location_no = \
@@ -650,7 +651,7 @@ class Quill:
                 m = self.process_events(self.responses, 0, trans[0], trans[1])
             if m == 0:
                 if len(trans) == 1 and trans[0] < 16:
-                    self.printout("Mar ne vidis, da v to smer ni poti?")
+                    self.printout("Mar ne vidiš, da v to smer ni poti?")
                 else:
                     self.printout("Tega pa ne morem.")
 
@@ -682,7 +683,7 @@ class Quill:
     def anykey(self):
         return
         QtWidgets.QMessageBox.information(
-            None, "Cakam...", "Pritisni OK, pa bova nadaljevala")
+            None, "Čakam...", "Pritisni OK, pa bova nadaljevala")
 
     def set_location_description(self, msg, dirs):
         self.printout(msg)
